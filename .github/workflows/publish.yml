@@ -1,8 +1,9 @@
 name: 📦 Publish to Maven Central (via GitHub Actions)
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   publish:
