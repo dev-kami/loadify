@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("maven-publish")
+    id("signing")
 }
 
 android {
@@ -32,6 +34,61 @@ android {
         jvmTarget = "11"
     }
 }
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "com.quadlogixs.loadify"
+                artifactId = "loadify"
+                version = "0.0.3"
+
+                pom {
+                    name.set("Loadify")
+                    description.set("Powerful image loader for Jetpack Compose")
+                    url.set("https://github.com/kami-kamran/Loadify")
+                    licenses {
+                        license {
+                            name.set("MIT")
+                            url.set("https://opensource.org/licenses/MIT")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("kami-kamran")
+                            name.set("Kamran")
+                            email.set("mkami.kamran786@gmail.com")
+                        }
+                    }
+                    scm {
+                        connection.set("scm:git:https://github.com/kami-kamran/Loadify.git")
+                        developerConnection.set("scm:git:ssh://github.com/kami-kamran/Loadify.git")
+                        url.set("https://github.com/kami-kamran/Loadify")
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "central"
+                url = uri("https://s01.oss.sonatype.org/content/repositories/releases/")
+                credentials {
+                    username = findProperty("nexusUsername") as String?
+                    password = findProperty("nexusPassword") as String?
+                }
+            }
+        }
+    }
+
+    signing {
+        useGpgCmd()
+        sign(publishing.publications["release"])
+    }
+}
+
+
+
 
 dependencies {
 
