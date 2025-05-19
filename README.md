@@ -2,50 +2,36 @@
 
 ![sample](sample.gif)
 
-**Loadify** is a lightweight yet powerful image loading library designed for Jetpack Compose. It supports modern image types and features while offering an easy-to-use API. Forget about Coil, Picasso, or Glide. With Loadify, you get full control, performance, and custom rendering – all in pure Kotlin and Compose.
+**Loadify** is a lightweight, powerful image loading library built natively in Kotlin for Jetpack Compose.  
+It supports all modern image types—GIF, SVG, WebP, Vector, Bitmap, Lottie—and offers unmatched performance and customization with zero dependencies like Coil, Picasso, or Glide.
 
 ---
 
 ## 🚀 Features
 
 ✅ Load from **URL**, **Drawable**, **Bitmap**, **Uri**  
-✅ Full support for **GIFs** (AnimatedImageDrawable)  
-✅ Render **SVGs**, **WebP**, and **Vector Drawables**  
-✅ **Lottie** animation support from raw resources & URL  
-✅ **Caching**: memory + disk  
-✅ **Image Transformations**: Circle crop, blur  
-✅ Easy integration with **Compose UI**  
-✅ Placeholder, error, loading, success callbacks  
-✅ No Coil or third-party dependency required
+✅ Full support for **GIFs** (via `AnimatedImageDrawable`)  
+✅ Render **SVGs**, **WebP**, **Vector Drawables**  
+✅ Play **Lottie Animations** (from raw res or remote URL)  
+✅ **Built-in Caching**: memory & disk  
+✅ **Image Transformations**: Circle Crop, Blur  
+✅ Customize **headers**, **placeholders**, and **error states**  
+✅ Full **loading state lifecycle**: `onLoading`, `onSuccess`, `onError`  
+✅ **MIT Licensed** & **100% Kotlin**
 
 ---
 
-## 🧩 Supported Formats
+## 📦 Installation (Maven Central)
 
-| Format | Source | Supported |
-|--------|--------|-----------|
-| PNG, JPG, BMP | URL, Drawable | ✅ |
-| WebP | URL, Drawable | ✅ |
-| SVG | URL only | ✅ |
-| GIF | URL, Drawable | ✅ |
-| Lottie JSON | RawRes, URL | ✅ |
-| Bitmap | Direct instance | ✅ |
-| Uri | Content provider | ✅ |
+```kotlin
+// build.gradle (Kotlin DSL)
+dependencies {
+    implementation("com.quadlogixs.loadify:loadify:0.0.7")
+}
 
----
-
-## 📦 Installation
-
-Coming soon to Maven Central...
-
-For now, clone the repo and include as a module in your project:
-
-```groovy
-// settings.gradle
-include(":loadify")
-
-// app/build.gradle
-implementation(project(":loadify"))
+repositories {
+    mavenCentral()
+}
 ```
 
 ---
@@ -62,19 +48,69 @@ Loadify(
 )
 ```
 
-### 🎞️ Load GIF
+---
+
+## 🧩 Supported Formats
+
+| Format         | Source                | ✅ Supported |
+|----------------|------------------------|--------------|
+| PNG, JPG, BMP  | URL, Drawable          | ✅           |
+| WebP           | URL, Drawable          | ✅           |
+| SVG            | URL                    | ✅           |
+| GIF            | URL, Drawable          | ✅           |
+| Lottie JSON    | RawRes, URL            | ✅           |
+| Bitmap         | Instance               | ✅           |
+| Uri            | From content picker    | ✅           |
+
+---
+
+## ✨ Advanced Options
 
 ```kotlin
-Loadify(data = R.drawable.animated_gif)
+Loadify(
+    data = "https://example.com/image.webp",
+    modifier = Modifier.size(120.dp),
+    circleCrop = true,
+    blurRadius = 10,
+    colorFilter = ColorFilter.tint(Color.Red),
+    headers = mapOf("Authorization" to "Bearer token123"),
+    contentScale = ContentScale.Fit,
+    onLoading = { /* show loader */ },
+    onLoadSuccess = { /* success */ },
+    onLoadError = { /* error */ },
+    lottieOptions = LottieOptions(
+        isPlaying = true,
+        iterations = LottieConstants.IterateForever,
+        speed = 1.2f,
+        renderMode = RenderMode.AUTOMATIC
+    )
+)
 ```
 
-### 🎨 Vector Drawable
+---
+
+## 🎞️ Format-Specific Examples
+
+### 🖼 Vector Drawable
 
 ```kotlin
 Loadify(data = R.drawable.ic_vector)
 ```
 
-### 💡 Lottie Animation (RawRes or URL)
+### 🎞 GIF (from drawable or URL)
+
+```kotlin
+Loadify(data = R.drawable.animated_gif)
+Loadify(data = "https://example.com/cat.gif")
+```
+
+### 🎨 SVG
+
+```kotlin
+Loadify(data = "https://example.com/image.svg")
+```
+
+### 🎬 Lottie Animation
 
 ```kotlin
 Loadify(data = R.raw.loading_animation)
@@ -82,28 +118,11 @@ Loadify(data = R.raw.loading_animation)
 Loadify(data = "https://example.com/lottie.json")
 ```
 
----
-
-## 🛠️ Customization
+### 📷 From Uri (image picker)
 
 ```kotlin
-Loadify(
-    data = imageUrl,
-    circleCrop = true,
-    blurRadius = 12,
-    headers = mapOf("Authorization" to "Bearer xyz"),
-    contentScale = ContentScale.Fit
-)
+Loadify(data = selectedImageUri)
 ```
-
----
-
-## 🧠 Why Loadify?
-
-- You’re building with Jetpack Compose.
-- You need **GIF + SVG + Lottie** support without hacks.
-- You want to avoid 3rd-party bloat like Coil.
-- You want full control over rendering.
 
 ---
 
@@ -111,18 +130,18 @@ Loadify(
 
 - ✔️ Vector Drawable
 - ✔️ WebP
-- ✔️ Lottie URL
-- ✔️ Lottie Raw
-- ✔️ GIF URL
-- ✔️ URI from Picker
+- ✔️ Lottie (Raw & URL)
+- ✔️ GIF (Drawable & Remote)
 - ✔️ Bitmap
-- ✔️ PNG/JPG
+- ✔️ URI (Picker)
+- ✔️ SVG from Web
+- ✔️ PNG / JPG
 
 ---
 
 ## 📂 Sample App
 
-Clone and run the sample app in `sample/` module to try everything.
+Run the sample project inside the `sample/` module to preview all features live.
 
 ---
 
@@ -130,7 +149,19 @@ Clone and run the sample app in `sample/` module to try everything.
 
 ```
 MIT License
-Copyright (c) 2025
+Copyright (c) 2025 Kamran
 ```
 
 ---
+
+## 🌍 Author
+
+**Kamran (@kami-kamran)**  
+🔗 [GitHub](https://github.com/kami-kamran)  
+📧 mkami.kamran786@gmail.com
+
+---
+
+## ⭐️ Show some love
+
+If you like Loadify, consider giving it a ⭐️ on GitHub — it helps more devs discover modern, dependency-free Compose tools!
