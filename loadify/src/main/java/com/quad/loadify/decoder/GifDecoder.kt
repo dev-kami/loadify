@@ -4,12 +4,14 @@ import android.graphics.ImageDecoder
 import android.graphics.drawable.AnimatedImageDrawable
 import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.nio.ByteBuffer
 
 object GifDecoder {
 
+    @RequiresApi(Build.VERSION_CODES.P)
     @Throws(Exception::class)
     fun decode(inputStream: InputStream): AnimatedImageDrawable? {
         val bytes = inputStream.readBytes()

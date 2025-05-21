@@ -2,12 +2,24 @@ package com.quad.loadify.compose
 
 
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Movie
 import android.graphics.Typeface
 import android.graphics.drawable.AnimatedImageDrawable
+import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.RawRes
 import androidx.compose.foundation.Image
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -20,9 +32,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import com.airbnb.lottie.AsyncUpdates
 import com.airbnb.lottie.RenderMode
-import com.airbnb.lottie.compose.*
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.LottieDynamicProperties
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.quad.loadify.core.ImageLoader
 import com.quad.loadify.model.ImageRequest
+import com.quad.loadify.utils.BitmapUtils.safeDownsample
 import com.quad.loadify.utils.ImageTransformer
 
 @Composable
@@ -32,6 +50,7 @@ fun Loadify(
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Crop,
     colorFilter: ColorFilter? = null,
+    enableCache:Boolean = true,
     alignment: Alignment = Alignment.Center,
     alpha: Float = DefaultAlpha,
     filterQuality: FilterQuality = DefaultFilterQuality,
@@ -61,7 +80,7 @@ fun Loadify(
             else -> null
         }
 
-        val request = ImageRequest(data = data, headers = headers, transform = transform)
+        val request = ImageRequest(data = data, headers = headers, transform = transform, isCacheEnabled = enableCache)
         val response = ImageLoader.load(context, request)
 
         response.onSuccess {
@@ -78,18 +97,22 @@ fun Loadify(
     when {
         loading && placeholder != null -> placeholder()
         failure != null && error != null -> error()
-        result is Bitmap -> Image(
-            bitmap = (result as Bitmap).asImageBitmap(),
-            contentDescription = contentDescription,
-            contentScale = contentScale,
-            colorFilter = colorFilter,
-            alignment = alignment,
-            alpha = alpha,
-            filterQuality = filterQuality,
-            modifier = modifier
-        )
 
-        result is AnimatedImageDrawable -> {
+        result is Bitmap -> {
+            val safeBitmap = remember(result) { (result as Bitmap).safeDownsample(2048) }
+            Image(
+                bitmap = safeBitmap.asImageBitmap(),
+                contentDescription = contentDescription,
+                contentScale = contentScale,
+                colorFilter = colorFilter,
+                alignment = alignment,
+                alpha = alpha,
+                filterQuality = filterQuality,
+                modifier = modifier
+            )
+        }
+
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && result is AnimatedImageDrawable   -> {
             val gif = result as AnimatedImageDrawable
             AndroidView(
                 factory = { ctx ->
@@ -109,6 +132,9 @@ fun Loadify(
             )
         }
 
+        Build.VERSION.SDK_INT > Build.VERSION_CODES.P && result == null && data is Int && data.toString().contains(".gif",ignoreCase = true) &&  context.resources.getResourceTypeName(data) == "drawable" -> {
+            LegacyGifImage(gifResId = data, modifier = modifier)
+        }
         result == null && data is Int && context.resources.getResourceTypeName(data) == "raw" -> {
             val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(data))
             val progress by animateLottieCompositionAsState(
@@ -155,6 +181,44 @@ fun Loadify(
 
         else -> Unit
     }
+}
+@Composable
+internal fun LegacyGifImage(
+    @RawRes gifResId: Int,
+    modifier: Modifier = Modifier
+) {
+    AndroidView(
+        factory = { ctx ->
+            object : View(ctx) {
+                private val movie: Movie = ctx.resources.openRawResource(gifResId).use {
+                    Movie.decodeStream(it)
+                }
+                private val handler = Handler(Looper.getMainLooper())
+                private var startTime: Long = 0
+
+                private val drawRunnable = object : Runnable {
+                    override fun run() {
+                        invalidate()
+                        handler.postDelayed(this, 16L)
+                    }
+                }
+
+                init {
+                    setLayerType(LAYER_TYPE_SOFTWARE, null)
+                    startTime = SystemClock.uptimeMillis()
+                    handler.post(drawRunnable)
+                }
+
+                override fun onDraw(canvas: Canvas) {
+                    val now = SystemClock.uptimeMillis()
+                    val relTime = (now - startTime) % movie.duration()
+                    movie.setTime(relTime.toInt())
+                    movie.draw(canvas, 0f, 0f)
+                }
+            }
+        },
+        modifier = modifier
+    )
 }
 
 data class LottieOptions(

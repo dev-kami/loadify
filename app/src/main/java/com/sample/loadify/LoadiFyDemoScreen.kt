@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.createBitmap
@@ -42,16 +43,17 @@ fun LoadIfyDemoScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .padding(innerPadding)
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row{
                 SampleSection(title = "Vector Drawable") {
-                    LoadIfySample(data = R.drawable.ic_benfit)
+                    LoadIfySample(data = R.drawable.ic_vector)
                 }
 
                 SampleSection(title = "Image from URL") {
                     LoadIfySample(
-                        data = "https://cdn.shopclues.com/images/thumbnails/79835/320/320/104787525124666394ID1006929615021796911502242942.jpg"
+                        data = "https://www.shutterstock.com/image-photo/closeup-portrait-funny-chubby-baby-600nw-2272411423.jpg"
                     )
                 }
             }
@@ -59,11 +61,11 @@ fun LoadIfyDemoScreen() {
 
             Row{
                 SampleSection(title = "GIF from Drawable") {
-                    LoadIfySample(data = R.drawable.earth)
+                    LoadIfySample(data = R.drawable.anim_emoji)
                 }
 
                 SampleSection(title = "Lottie from Raw") {
-                    LoadIfySample(data = R.raw.earth)
+                    LoadIfySample(data = R.raw.anim_start)
                 }
 
             }
@@ -105,10 +107,10 @@ fun LoadIfyDemoScreen() {
             Divider()
             Row{
             SampleSection(title = "PNG Image") {
-                LoadIfySample(data = R.drawable.butterfly)
+                LoadIfySample(data = R.drawable.baby)
             }
                 SampleSection(title = "SVG Image") {
-                LoadIfySample(data = "https://www.svgrepo.com/show/19461/url-link.svg")
+                LoadIfySample(data = R.drawable.ic_emoji)
             }
             }
         }

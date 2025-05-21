@@ -17,4 +17,23 @@ object BitmapUtils {
         drawable.draw(canvas)
         return bitmap
     }
+
+    fun Bitmap.safeDownsample(maxSize: Int = 2048): Bitmap {
+        if (width <= maxSize && height <= maxSize) return this
+
+        val ratio = width.toFloat() / height.toFloat()
+        val newWidth: Int
+        val newHeight: Int
+
+        if (width > height) {
+            newWidth = maxSize
+            newHeight = (maxSize / ratio).toInt()
+        } else {
+            newHeight = maxSize
+            newWidth = (maxSize * ratio).toInt()
+        }
+
+        return Bitmap.createScaledBitmap(this, newWidth, newHeight, true)
+    }
+
 }

@@ -14,7 +14,7 @@ object MemoryCache {
         }
     }
 
-    fun get(key: String): Bitmap? = cache.get(key)
+    fun get(key: String): Bitmap? = cache[key]
 
     fun put(key: String, bitmap: Bitmap) {
         cache.put(key, bitmap)

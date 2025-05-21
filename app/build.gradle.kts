@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.sample.loadify"
-        minSdk = 28
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -37,6 +37,9 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3" // Compatible with AGP 8.2.0
+    }
 }
 
 dependencies {
@@ -56,7 +59,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.loadify)
+    //implementation(libs.loadify)
+    implementation(project(":loadify"))
 
 
 }
