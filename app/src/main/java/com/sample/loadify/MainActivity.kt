@@ -18,6 +18,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LoadifyTheme {
+                //Loadify
                 LoadIfyDemoScreen()
             }
         }
