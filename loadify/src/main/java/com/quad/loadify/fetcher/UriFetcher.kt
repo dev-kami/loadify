@@ -5,7 +5,7 @@ import android.net.Uri
 import com.quad.loadify.model.ImageRequest
 import java.io.InputStream
 
-object UriFetcher {
+internal object UriFetcher {
 
     @Throws(Exception::class)
     fun fetch(context: Context, request: ImageRequest): InputStream {

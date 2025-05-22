@@ -8,7 +8,7 @@ import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.nio.ByteBuffer
 
-object BitmapDecoder {
+internal object BitmapDecoder {
 
     @Throws(Exception::class)
     fun decode(inputStream: InputStream): Bitmap {

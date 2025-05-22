@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 import com.quad.loadify.manager.ImageRequestManager
 import com.quad.loadify.model.ImageRequest
 
-object ImageLoader {
+internal object ImageLoader {
     suspend fun load(context: Context, request: ImageRequest): Result<Any> {
         return ImageRequestManager.execute(context, request)
     }

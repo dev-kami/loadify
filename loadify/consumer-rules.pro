@@ -1,7 +1,10 @@
 # Keep all public classes and public methods/fields (API surface)
--keep public class your.package.name.** {
+-keep public class com.quad.loadify.** {
     public *;
 }
+-keep class com.quad.loadify.compose.** { *; }
+-keepnames class com.quad.loadify.compose.** { *; }
+
 
 # Keep annotations
 -keepattributes *Annotation*

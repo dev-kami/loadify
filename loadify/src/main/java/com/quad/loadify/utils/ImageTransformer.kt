@@ -4,7 +4,7 @@ import android.graphics.*
 import kotlin.math.min
 import androidx.core.graphics.createBitmap
 
-object ImageTransformer {
+internal object ImageTransformer {
 
     fun circleCrop(source: Bitmap): Bitmap {
         val size = min(source.width, source.height)

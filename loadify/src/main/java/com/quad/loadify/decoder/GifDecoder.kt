@@ -9,7 +9,7 @@ import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.nio.ByteBuffer
 
-object GifDecoder {
+internal object GifDecoder {
 
     @RequiresApi(Build.VERSION_CODES.P)
     @Throws(Exception::class)

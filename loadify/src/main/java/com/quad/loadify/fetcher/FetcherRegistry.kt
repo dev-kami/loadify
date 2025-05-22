@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import com.quad.loadify.model.ImageRequest
 
-object FetcherRegistry {
+internal object FetcherRegistry {
 
     @Throws(Exception::class)
     fun fetch(context: Context, request: ImageRequest): Any {

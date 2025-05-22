@@ -10,7 +10,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import java.io.InputStream
 import androidx.core.graphics.createBitmap
 import com.quad.loadify.utils.BitmapUtils
-object DecoderRegistry {
+internal object DecoderRegistry {
 
     @Throws(Exception::class)
     fun decode(inputStream: InputStream, extension: String): Any {

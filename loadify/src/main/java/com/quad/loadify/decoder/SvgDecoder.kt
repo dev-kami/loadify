@@ -7,7 +7,7 @@ import com.caverock.androidsvg.SVG
 import java.io.InputStream
 import androidx.core.graphics.createBitmap
 
-object SvgDecoder {
+internal object SvgDecoder {
 
     @Throws(Exception::class)
     fun decode(inputStream: InputStream, width: Int = 512, height: Int = 512): Bitmap {

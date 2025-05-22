@@ -5,7 +5,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.createBitmap
 
-object BitmapUtils {
+internal object BitmapUtils {
 
     fun drawableToBitmap(drawable: Drawable): Bitmap {
         val width = if (drawable.intrinsicWidth > 0) drawable.intrinsicWidth else 1

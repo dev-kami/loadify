@@ -5,7 +5,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 
-object FileFetcher {
+internal object FileFetcher {
 
     @Throws(Exception::class)
     fun fetch(request: ImageRequest): InputStream {

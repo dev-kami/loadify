@@ -5,7 +5,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.InputStream
 
-object NetworkFetcher {
+internal object NetworkFetcher {
 
     private val client = OkHttpClient()
 

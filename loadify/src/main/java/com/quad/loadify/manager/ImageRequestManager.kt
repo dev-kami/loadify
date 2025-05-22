@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayInputStream
 import java.io.InputStream
-object ImageRequestManager {
+internal object ImageRequestManager {
 
     suspend fun execute(context: Context, request: ImageRequest): Result<Any> {
         return withContext(Dispatchers.IO) {
@@ -87,7 +87,7 @@ object ImageRequestManager {
                             transformed
                         }
                         // Handle animated images on older versions here
-                        is AnimatedImageDrawable -> {
+                        is Int -> {
                             decoded
                         }
                         else -> throw Exception("Unsupported decoded type: ${decoded::class}")
