@@ -1,6 +1,9 @@
 # 🖼️ Loadify - The Ultimate Image Loading Library for Jetpack Compose
 
-![sample](sample.gif)
+
+  <img src="sample.gif" width="300"/>
+
+
 
 **Loadify** is a lightweight, powerful image loading library built natively in Kotlin for Jetpack Compose.  
 It supports all modern image types—GIF, SVG, WebP, Vector, Bitmap, Lottie—and offers unmatched performance and customization with zero dependencies like Coil, Picasso, or Glide.
