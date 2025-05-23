@@ -29,7 +29,7 @@ It supports all modern image types—GIF, SVG, WebP, Vector, Bitmap, Lottie—an
 ```kotlin
 // build.gradle (Kotlin DSL)
 dependencies {
-    implementation("com.quadlogixs.loadify:loadify:0.1.0")
+    implementation("com.quadlogixs.loadify:loadify:0.1.1")
 }
 
 repositories {
