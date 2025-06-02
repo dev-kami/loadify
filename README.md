@@ -159,8 +159,8 @@ Copyright (c) 2025 Kamran
 
 ## 🌍 Author
 
-**Kamran (@kambrain)**  
-🔗 [GitHub](https://github.com/kambrain)  
+**Kamran (@dev-kami)**  
+🔗 [GitHub](https://github.com/dev-kami)  
 📧 mkami.kamran786@gmail.com
 
 ---
